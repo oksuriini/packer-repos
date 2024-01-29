@@ -1,0 +1,30 @@
+{
+  "variables": {
+    "region": "eu-north-1",
+    "aws_profile": "AWS PROFILE",
+    "source_ami": "ami-0506d6d51f1916a96",
+    "instance_type": "t3.micro"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "profile": "{{user `aws_profile`}}",
+      "region": "{{user `region`}}",
+      "instance_type": "{{user `instance_type`}}",
+      "source_ami": "{{user `source_ami`}}",
+      "ssh_username": "admin",
+      "ami_name": "jenkins-master-2.204.1",
+      "ami_description": "Debian Linux with Jenkins Server",
+      "run_tags": {
+        "Name": "packer-builder"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "./setup.sh",
+      "execute_command": "sudo -E -S sh '{{ .Path }}'"
+    }
+  ]
+}
